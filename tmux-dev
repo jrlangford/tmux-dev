@@ -4,13 +4,7 @@ SESSION_NAME="$(basename $PROOT)-$(echo $PROOT | md5)"
 
 INIT_TMUX="TRUE"
 
-for match in $(tmux ls 2>/dev/null | grep $SESSION_NAME | cut -d ':' -f 1)
-do
-    if [ "$SESSION_NAME" == "$match" ]
-    then
-        INIT_TMUX="FALSE"
-    fi
-done
+(tmux ls -F '#S' 2>/dev/null | grep -x $SESSION_NAME) && INIT_TMUX="FALSE"
 
 if [ "$INIT_TMUX" == "TRUE" ]
 then
